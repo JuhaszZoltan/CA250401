@@ -12,6 +12,7 @@ while (!sr.EndOfStream)
     int napSorszam = int.Parse(tmp[1]);
     int tejMennyiseg = int.Parse(tmp[2]);
     Tehen tehen = new(tehenId);
+
     if (!happyCows.Contains(tehen)) happyCows.Add(tehen);
     happyCows[happyCows.IndexOf(tehen)].TejMennyisegRogzit(napSorszam, tejMennyiseg);
 }
@@ -38,3 +39,11 @@ else
     int leszarmazottak = happyCows.Count(t => t.ID.StartsWith(keresettID) && t.ID != keresettID);
     Console.WriteLine($"\t{keresettID} leszármazottjainak száma: {leszarmazottak}");
 }
+
+//Ember e1 = new() { Name = "Laci", Age = 12 };
+//Ember e2 = new() { Name = "Laci", Age = 12 };
+
+//Tehen t1 = new("33");
+//Tehen t2 = new("33");
+
+//Console.WriteLine(t1 == t2);
