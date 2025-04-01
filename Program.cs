@@ -1,17 +1,40 @@
-﻿const string PATH = "..\\..\\..\\src\\valami.txt";
+﻿using CA250401;
 
-Console.WriteLine("hello world!");
+const string HOZAM = "C:\\Users\\juhas\\source\\repos\\CA250401\\src\\hozam.txt";
+const string JOLTEJELOK = "C:\\Users\\juhas\\source\\repos\\CA250401\\src\\joltejelok.txt";
+List<Tehen> happyCows = [];
 
-Console.WriteLine("Wanna' read valami.txt? y/n");
-
-if (Console.ReadKey(true).KeyChar == 'y')
+using StreamReader sr = new(HOZAM);
+while (!sr.EndOfStream)
 {
-    StreamReader sr = new("valami.txt");
-    Console.WriteLine(sr.ReadLine());
+    var tmp = sr.ReadLine().Split(';');
+    string tehenId = tmp[0];
+    int napSorszam = int.Parse(tmp[1]);
+    int tejMennyiseg = int.Parse(tmp[2]);
+    Tehen tehen = new(tehenId);
+    if (!happyCows.Contains(tehen)) happyCows.Add(tehen);
+    happyCows[happyCows.IndexOf(tehen)].TejMennyisegRogzit(napSorszam, tejMennyiseg);
 }
 
-Console.WriteLine("press ESC to exit");
+Console.WriteLine($"tehenek száma: {happyCows.Count}");
 
-while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
+var joltejelok = happyCows.Where(t => t.AtlagosFejesiMennyiseg != -1);
+
+using StreamWriter sw = new(JOLTEJELOK);
+foreach (var tehen in joltejelok)
+{
+    sw.WriteLine($"{tehen.ID} {tehen.AtlagosFejesiMennyiseg}");
+}
+Console.WriteLine($"{joltejelok.Count()} sor került az állományba");
 
 
+Console.Write("írd be egy tehén azonosítóját: ");
+string keresettID = Console.ReadLine();
+
+if (!happyCows.Any(t => t.ID == keresettID))
+    Console.WriteLine("\tnincs ilyen azonosítójú tehén!");
+else
+{
+    int leszarmazottak = happyCows.Count(t => t.ID.StartsWith(keresettID) && t.ID != keresettID);
+    Console.WriteLine($"\t{keresettID} leszármazottjainak száma: {leszarmazottak}");
+}
